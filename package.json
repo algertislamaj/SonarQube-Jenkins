@@ -1,0 +1,11 @@
+{
+  "name": "peroapp",
+  "version": "1.0.0",
+  "description": "kot",
+  "main": "index.js",
+  "scripts": {
+    "test": "tst"
+  },
+  "author": "",
+  "license": "ISC"
+}
