@@ -1,0 +1,34 @@
+pipeline {
+    agent {
+        label 'wsl'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/algertislamaj/reactjsTest.git'
+            }
+        }
+
+        stage('Run SonarQube Analysis') {
+            steps {
+                script {
+                    // Pull the SonarQube scanner image
+                    sh 'docker pull sonarsource/sonar-scanner-cli'
+
+                    // Run SonarQube analysis with host machine's IP address
+                    sh '''
+                    docker run \
+                        --rm \
+                        -v "$(pwd):/usr/src" \
+                        -w /usr/src \
+                        -e SONAR_HOST_URL="http://host.docker.internal:9000" \
+                        -e SONAR_TOKEN="squ_77fc3a045ba0bf9c01aef117e57fb304f68cabae" \
+                        -e SONAR_PROJECT_SETTINGS="./sonar-project.properties" \
+                        sonarsource/sonar-scanner-cli
+                    '''
+                }
+            }
+        }
+    }
+}
